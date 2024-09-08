@@ -1,9 +1,12 @@
 package com.funkeln.pronouns.utils;
 
+import com.funkeln.pronouns.PronounAddon;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.labymod.api.Laby;
+import net.labymod.api.client.gui.icon.Icon;
 
 import java.io.*;
 import java.net.*;
@@ -15,12 +18,21 @@ public class PronounsAPI {
 
   public static final String API_URL = "https://en.pronouns.page/api/";
   public static final String FLAGS_URL = "https://en.pronouns.page/flags/";
+  private static PronounsAPI instance;
 
   private static final Queue<Consumer<Void>> queues = new ConcurrentLinkedQueue<>();
   private static final Map<String, ProfileFetchListener> listeners = new HashMap<>();
 
   public static void addProfileFetchListener(String username, ProfileFetchListener listener) {
     listeners.put(username, listener);
+  }
+
+
+  public static PronounsAPI getInstance() {
+    if (instance == null) {
+      instance = new PronounsAPI();
+    }
+    return instance;
   }
 
   private static void fetchProfile(String name) {
@@ -33,7 +45,8 @@ public class PronounsAPI {
           profile = element.getAsJsonObject();
         }
         String pronoun = getPronoun(profile);
-        Profile profileObj = new Profile(name, pronoun);
+        Icon[] flags = getFlags(profile);
+        Profile profileObj = new Profile(name, pronoun, flags);
         Pridetags.profiles.add(profileObj);
 
         // Notify listener
@@ -73,4 +86,37 @@ public class PronounsAPI {
     if (pronounsArray == null || pronounsArray.isEmpty()) return null;
     return pronounsArray.get(0).getAsJsonObject().get("value").getAsString();
   }
-}
+
+  public static Icon[] getFlags(JsonObject profile) {
+    if (PronounAddon.getInstance().configuration().enabled().get()) {
+      JsonObject profiles = profile.getAsJsonObject("profiles");
+      if (profiles == null) {
+        return null;
+      }
+      JsonObject enProfile = profiles.getAsJsonObject("en");
+      if (enProfile == null) {
+        return null;
+      }
+      JsonArray flagsArray = enProfile.getAsJsonArray("flags");
+      if (flagsArray == null || flagsArray.isEmpty()) {
+        return null;
+      }
+      List<Icon> flagsList = new ArrayList<>();
+      List<String> flagNamesList = new ArrayList<>();
+      for (JsonElement flag : flagsArray) {
+        String url = FLAGS_URL + flag.getAsString() + ".png";
+        try {
+          URL iconURL = new URL(url);
+          Icon icon = Icon.url(String.valueOf(iconURL));
+          Laby.labyAPI().minecraft().chatExecutor().displayClientMessage(icon.getUrl());
+          flagsList.add(icon);
+          flagNamesList.add(flag.getAsString());
+        } catch (Exception e) {
+          e.printStackTrace();  // Consider better error handling here
+        }
+      }
+      return flagsList.toArray(new Icon[0]);
+    }
+    return null;
+  }
+  }

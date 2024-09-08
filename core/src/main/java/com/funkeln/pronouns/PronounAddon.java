@@ -1,5 +1,6 @@
 package com.funkeln.pronouns;
 
+import com.funkeln.pronouns.nametag.FlagNameTag;
 import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.component.Component;
@@ -34,6 +35,7 @@ public class PronounAddon extends LabyAddon<PronounConfiguration> {
 
   @Override
   protected void enable() {
+    INSTANCE = this;
     this.registerSettingCategory();
     if(this.configuration().enabled().get()) {
       if(configuration().name().get().isEmpty()) {
@@ -75,13 +77,15 @@ public class PronounAddon extends LabyAddon<PronounConfiguration> {
             Laby.references().renderPipeline().rectangleRenderer()
         )
     );
+    this.labyAPI().tagRegistry().register(
+        "pronouns_flags",
+        PositionType.ABOVE_NAME,
+        new FlagNameTag(
+            Laby.references().renderPipeline(),
+            Laby.references().renderPipeline().rectangleRenderer()
+        )
+    );
   }
-
-  public void prepareComponent(Profile profile) {
-    component = Component.text(profile.getPronoun());
-    logger().info("ara ara: " + component.toString());
-  }
-
 
   @Override
   protected Class<PronounConfiguration> configurationClass() {
