@@ -4,16 +4,16 @@ plugins {
     id("net.labymod.gradle.addon")
 }
 
-group = "org.example"
+group = "de.funkeln.pronouns"
 version = System.getenv().getOrDefault("VERSION", "1.0.0")
 
 labyMod {
-    defaultPackageName = "org.example" //change this to your main package name (used by all modules)
+    defaultPackageName = "de.funkeln.pronouns" //change this to your main package name (used by all modules)
     addonInfo {
-        namespace = "example"
-        displayName = "ExampleAddon"
-        author = "Example Author"
-        description = "Example Description"
+        namespace = "pronouns"
+        displayName = "PronounsDisplay"
+        author = "funkeln"
+        description = "Display your Pronouns from pronouns.page ingame"
         minecraftVersion = "*"
         version = getVersion().toString()
     }

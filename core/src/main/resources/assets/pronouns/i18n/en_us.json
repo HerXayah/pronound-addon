@@ -3,6 +3,9 @@
     "settings": {
       "enabled": {
         "name": "Enabled"
+      },
+      "name": {
+        "name": "pronouns.page Username"
       }
     }
   }

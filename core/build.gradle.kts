@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     api(project(":api"))
+    maven(mavenCentral(), "org.apache.httpcomponents:httpclient:4.5.14")
 }
 
 labyModProcessor {
