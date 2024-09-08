@@ -20,7 +20,6 @@ public class PronounsAPI {
   public static final String FLAGS_URL = "https://en.pronouns.page/flags/";
   private static PronounsAPI instance;
 
-  private static final Queue<Consumer<Void>> queues = new ConcurrentLinkedQueue<>();
   private static final Map<String, ProfileFetchListener> listeners = new HashMap<>();
 
   public static void addProfileFetchListener(String username, ProfileFetchListener listener) {

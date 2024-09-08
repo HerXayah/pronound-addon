@@ -36,7 +36,9 @@ public class FlagNameTag extends NameTag {
 
   @Override
   protected @Nullable RenderableComponent getRenderableComponent() {
-    if (this.entity instanceof Player && !this.entity.isCrouching()) {
+    if (!(this.entity instanceof Player) || this.entity.isCrouching() || !Laby.labyAPI().minecraft().getClientPlayer().getName().equals(((Player) this.entity).getName())) {
+      return null;
+    }
       HorizontalAlignment alignment;
       alignment = HorizontalAlignment.CENTER;
 
@@ -56,11 +58,8 @@ public class FlagNameTag extends NameTag {
       }
 
       return RenderableComponent.of(component, alignment);
-    } else {
-      return null;
     }
 
-  }
   @Override
   protected void renderText(
       Stack stack,

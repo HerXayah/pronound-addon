@@ -1,6 +1,7 @@
 package com.funkeln.pronouns;
 
 import com.funkeln.pronouns.nametag.FlagNameTag;
+import com.funkeln.pronouns.utils.Pridetags;
 import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.component.Component;
@@ -38,7 +39,7 @@ public class PronounAddon extends LabyAddon<PronounConfiguration> {
     this.registerSettingCategory();
     if(this.configuration().enabled().get()) {
       if(configuration().name().get().isEmpty()) {
-        meow = labyAPI().minecraft().getClientPlayer().getName().trim();
+        displayMessage("Please set the name in the config");
       } else {
         meow = configuration().name().get().trim();
       }
@@ -57,7 +58,6 @@ public class PronounAddon extends LabyAddon<PronounConfiguration> {
       });
 
       // Request the profile
-      // if name is empty, set it to the ingame user
       PronounsAPI.getProfile(meow);
 
       // Wait to ensure the async task completes (for demonstration purposes)

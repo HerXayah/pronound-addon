@@ -6,16 +6,12 @@ import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.Player;
 import net.labymod.api.client.entity.player.tag.tags.NameTag;
 import net.labymod.api.client.gui.HorizontalAlignment;
-import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.render.RenderPipeline;
 import net.labymod.api.client.render.draw.RectangleRenderer;
 import net.labymod.api.client.render.font.RenderableComponent;
 import net.labymod.api.client.render.matrix.Stack;
 import com.funkeln.pronouns.utils.Profile;
-import com.funkeln.pronouns.utils.PronounsAPI;
 import org.jetbrains.annotations.Nullable;
-
-import static com.funkeln.pronouns.utils.Profile.flags;
 
 /**
  * @author https://github.com/PrincessAkira (Sarah) Today is the 8/16/2024 @7:26 PM This project is
@@ -33,7 +29,7 @@ public class PronounNameTag extends NameTag {
 
   @Override
   protected @Nullable RenderableComponent getRenderableComponent() {
-    if (!(this.entity instanceof Player) || this.entity.isCrouching()) {
+    if (!(this.entity instanceof Player) || this.entity.isCrouching() || !Laby.labyAPI().minecraft().getClientPlayer().getName().equals(((Player) this.entity).getName())) {
       return null;
     }
 
