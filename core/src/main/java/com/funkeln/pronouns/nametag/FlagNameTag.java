@@ -41,7 +41,12 @@ public class FlagNameTag extends NameTag {
       alignment = HorizontalAlignment.CENTER;
 
       PronounAddon addon = PronounAddon.getInstance();
+
       if (!addon.configuration().enabled().get()) {
+        return null;
+      }
+
+      if (!addon.configuration().renderFlags().get()) {
         return null;
       }
 

@@ -13,9 +13,23 @@ public class PronounConfiguration extends AddonConfig {
   @SwitchSetting
   private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
+  @SwitchSetting
+  private final ConfigProperty<Boolean> renderFlags = new ConfigProperty<>(true);
+
+  @SwitchSetting
+  private final ConfigProperty<Boolean> renderTag = new ConfigProperty<>(true);
+
   @Override
   public ConfigProperty<Boolean> enabled() {
     return this.enabled;
+  }
+
+  public ConfigProperty<Boolean> renderTag() {
+    return this.renderTag;
+  }
+
+  public ConfigProperty<Boolean> renderFlags() {
+    return this.renderFlags;
   }
 
   @TextFieldSetting

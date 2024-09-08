@@ -8,7 +8,7 @@ group = "de.funkeln.pronouns"
 version = System.getenv().getOrDefault("VERSION", "1.0.0")  
 
 labyMod {
-    defaultPackageName = "de.funkeln" //change this to your main package name (used by all modules)
+    defaultPackageName = "de.funkeln.pronouns" //change this to your main package name (used by all modules)
     addonInfo {
         namespace = "pronouns"
         displayName = "PronounsDisplay"

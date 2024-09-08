@@ -46,6 +46,10 @@ public class PronounNameTag extends NameTag {
       return null;
     }
 
+    if (!addon.configuration().renderTag().get()) {
+      return null;
+    }
+
     Component component = Component.text(PronounAddon.getInstance().pronoun);
     if (component == null) {
       return null;

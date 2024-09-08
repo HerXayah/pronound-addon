@@ -32,21 +32,20 @@ public class PronounAddon extends LabyAddon<PronounConfiguration> {
     return INSTANCE;
   }
 
-
   @Override
   protected void enable() {
     INSTANCE = this;
     this.registerSettingCategory();
     if(this.configuration().enabled().get()) {
       if(configuration().name().get().isEmpty()) {
-        meow = labyAPI().minecraft().getClientPlayer().getName();
+        meow = labyAPI().minecraft().getClientPlayer().getName().trim();
       } else {
         meow = configuration().name().get().trim();
       }
-      displayMessage(meow);
       PronounsAPI.addProfileFetchListener(meow, new ProfileFetchListener() {
         @Override
         public void onProfileFetched(Profile profile) {
+          log.info("Fetched profile for " + meow);
           pronoun = profile.getPronoun().trim();
         }
 

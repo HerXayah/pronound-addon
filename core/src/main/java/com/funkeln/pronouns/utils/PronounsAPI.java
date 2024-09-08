@@ -27,7 +27,6 @@ public class PronounsAPI {
     listeners.put(username, listener);
   }
 
-
   public static PronounsAPI getInstance() {
     if (instance == null) {
       instance = new PronounsAPI();
@@ -108,7 +107,6 @@ public class PronounsAPI {
         try {
           URL iconURL = new URL(url);
           Icon icon = Icon.url(String.valueOf(iconURL));
-          Laby.labyAPI().minecraft().chatExecutor().displayClientMessage(icon.getUrl());
           flagsList.add(icon);
           flagNamesList.add(flag.getAsString());
         } catch (Exception e) {

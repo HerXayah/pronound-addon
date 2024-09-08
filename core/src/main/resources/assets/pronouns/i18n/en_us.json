@@ -1,11 +1,29 @@
 {
-  "example": {
+  "pronouns": {
     "settings": {
       "enabled": {
-        "name": "Enabled"
+        "name": "Addon enabled?"
       },
       "name": {
-        "name": "pronouns.page Username"
+        "name": "pronouns.page Username",
+        "description": "The pronouns.page username of the player",
+        "type": "text",
+        "value": "player",
+        "default": ""
+      },
+      "renderFlags": {
+        "name": "Render Flags",
+        "description": "Render the flags of the player",
+        "default": "true",
+        "type": "boolean",
+        "value": "true"
+      },
+      "renderTag": {
+        "name": "Render Tag",
+        "description": "Render the tag of the player",
+        "default": "true",
+        "type": "boolean",
+        "value": "true"
       }
     }
   }
