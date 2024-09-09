@@ -16,14 +16,11 @@ import com.funkeln.pronouns.nametag.PronounNameTag;
 
 @AddonMain
 public class PronounAddon extends LabyAddon<PronounConfiguration> {
-
-
   private static final Log log = LogFactory.getLog(PronounAddon.class);
   public static PronounAddon INSTANCE;
   public String pronoun;
   public volatile Component component;
   public String meow;
-
 
   public PronounAddon() {
     INSTANCE = this;
@@ -52,21 +49,32 @@ public class PronounAddon extends LabyAddon<PronounConfiguration> {
     }
     this.logger().info("Enabled the Addon");
     this.labyAPI().tagRegistry().register(
-        "pronouns",
-        PositionType.BELOW_NAME,
-        new PronounNameTag(
-            Laby.references().renderPipeline(),
-            Laby.references().renderPipeline().rectangleRenderer()
-        )
+      "pronouns",
+      PositionType.BELOW_NAME,
+      new PronounNameTag(
+        Laby.references().renderPipeline(),
+        Laby.references().renderPipeline().rectangleRenderer()
+      )
     );
     this.labyAPI().tagRegistry().register(
-        "pronouns_flags",
-        PositionType.ABOVE_NAME,
-        new FlagNameTag(
-            Laby.references().renderPipeline(),
-            Laby.references().renderPipeline().rectangleRenderer()
-        )
+      "pronouns_flags",
+      PositionType.ABOVE_NAME,
+      new FlagNameTag(
+        Laby.references().renderPipeline(),
+        Laby.references().renderPipeline().rectangleRenderer()
+      )
     );
+    this.configuration().name().addChangeListener(this::publishNameUpdate);
+  }
+
+  public void publishNameUpdate() {
+    String newName = configuration().name().get();
+    logger().info("Publishing name change to " + newName);
+    JsonObject data = new JsonObject();
+    data.addProperty("name", newName
+    );
+    labyAPI().labyConnect().getSession().sendBroadcastPayload("pronouns", data);
+    ProfileRepository.clearExpired();
   }
 
   @Override

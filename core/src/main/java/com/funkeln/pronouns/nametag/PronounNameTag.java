@@ -1,6 +1,7 @@
 package com.funkeln.pronouns.nametag;
 
 import com.funkeln.pronouns.PronounAddon;
+import com.funkeln.pronouns.profile.ProfileRepository;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.Player;
@@ -12,6 +13,7 @@ import net.labymod.api.client.render.font.RenderableComponent;
 import net.labymod.api.client.render.matrix.Stack;
 import com.funkeln.pronouns.profile.Profile;
 import org.jetbrains.annotations.Nullable;
+import java.util.Optional;
 
 /**
  * @author https://github.com/PrincessAkira (Sarah) Today is the 8/16/2024 @7:26 PM This project is
@@ -19,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
  * @description Another day of Insanity
  */
 public class PronounNameTag extends NameTag {
-
   private final RectangleRenderer rectangleRenderer;
 
   public PronounNameTag(RenderPipeline renderPipeline, RectangleRenderer rectangleRenderer) {
@@ -29,29 +30,31 @@ public class PronounNameTag extends NameTag {
 
   @Override
   protected @Nullable RenderableComponent getRenderableComponent() {
-    if (!(this.entity instanceof Player) || this.entity.isCrouching() || !Laby.labyAPI().minecraft().getClientPlayer().getName().equals(((Player) this.entity).getName())) {
+    if (!(this.entity instanceof Player) || this.entity.isCrouching()) {
       return null;
     }
 
-    HorizontalAlignment alignment;
-    alignment = HorizontalAlignment.CENTER;
+    String pronoun = myPronoun();
+    if (pronoun != null) {
+      HorizontalAlignment alignment = HorizontalAlignment.CENTER;
+      PronounAddon addon = PronounAddon.getInstance();
+      if (!addon.configuration().enabled().get()) {
+        return null;
+      }
 
+      if (!addon.configuration().renderTag().get()) {
+        return null;
+      }
 
-    PronounAddon addon = PronounAddon.getInstance();
-    if (!addon.configuration().enabled().get()) {
+      Component component = Component.text(pronoun);
+      if (component == null) {
+        return null;
+      }
+
+      return RenderableComponent.of(component, alignment);
+    } else {
       return null;
     }
-
-    if (!addon.configuration().renderTag().get()) {
-      return null;
-    }
-
-    Component component = Component.text(PronounAddon.getInstance().pronoun);
-    if (component == null) {
-      return null;
-    }
-
-    return RenderableComponent.of(component, alignment);
   }
 
   @Override
@@ -85,16 +88,26 @@ public class PronounNameTag extends NameTag {
 
   @Override
   public float getWidth() {
-    if (Profile.getFlags() == null) {
+    if (myPronoun() == null) {
       return super.getWidth();
     }
-
     return super.getWidth();
   }
-
 
   @Override
   public float getHeight() {
     return super.getHeight() + 1;
+  }
+
+
+  private String myPronoun() {
+    Optional<Profile> profileFetch = ProfileRepository.find(this.entity.getUniqueId());
+    if (profileFetch.isPresent()) {
+      Profile profile = profileFetch.get();
+      if (profile.pronounsAvailable()) {
+        return profile.pronoun();
+      }
+    }
+    return null;
   }
 }

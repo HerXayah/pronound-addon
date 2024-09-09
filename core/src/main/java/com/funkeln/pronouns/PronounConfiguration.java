@@ -35,7 +35,6 @@ public class PronounConfiguration extends AddonConfig {
   @TextFieldSetting
   private final ConfigProperty<String> name = new ConfigProperty<>("");
 
-
   public ConfigProperty<String> name() {
     return this.name;
   }

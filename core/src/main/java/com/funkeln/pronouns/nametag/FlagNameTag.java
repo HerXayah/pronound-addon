@@ -1,7 +1,9 @@
 package com.funkeln.pronouns.nametag;
 
 import com.funkeln.pronouns.PronounAddon;
-import com.funkeln.pronouns.utils.Profile;
+import com.funkeln.pronouns.profile.Profile;
+import com.funkeln.pronouns.profile.ProfileRepository;
+import java.util.Optional;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.Player;
@@ -14,7 +16,6 @@ import net.labymod.api.client.render.font.RenderableComponent;
 import net.labymod.api.client.render.matrix.Stack;
 import org.jetbrains.annotations.Nullable;
 
-import static com.funkeln.pronouns.utils.Profile.flags;
 
 /**
  * @author https://github.com/PrincessAkira (Sarah) Today is the 9/8/2024 @2:20 PM This project is
@@ -65,27 +66,27 @@ public class FlagNameTag extends NameTag {
 
   @Override
   protected void renderText(
-      Stack stack,
-      RenderableComponent component,
-      boolean discrete,
-      int textColor,
-      int backgroundColor,
-      float x,
-      float y
+    Stack stack,
+    RenderableComponent component,
+    boolean discrete,
+    int textColor,
+    int backgroundColor,
+    float x,
+    float y
   ) {
     x = 0;
     float width = this.getWidth();
     float height = this.getHeight();
 
-    if (Profile.getFlags() != null) {
-      float padding = 0.5f; // Space between flags
+    Icon[] flags = myFlags();
+    if (flags != null) {
+      int flagcount = 0;
+      float padding = 0.5f; // Space between myFlags
       int widtz = 15; // Define the width for each flag
       for (Icon flag : flags) {
-
         // Render flag at the updated x position
         flagcount++;
         flag.render(stack, x, +1, 15, height - 1);
-
         // Move the x position to the right for the next flag
         x += widtz + padding; // Increment x by the width of the flag and padding
       }
@@ -100,15 +101,26 @@ public class FlagNameTag extends NameTag {
 
   @Override
   public float getWidth() {
-    if (Profile.getFlags() == null) {
+    Icon[] flags = myFlags();
+    if (flags == null) {
       return super.getWidth();
     }
-
     return super.getWidth() + 15 * flags.length;
   }
 
   @Override
   public float getHeight() {
     return super.getHeight() + 1;
+  }
+
+  private Icon[] myFlags() {
+    Optional<Profile> profileFetch = ProfileRepository.find(this.entity.getUniqueId());
+    if (profileFetch.isPresent()) {
+      Profile profile = profileFetch.get();
+      if (profile.flagsAvailable()) {
+        return profile.flags();
+      }
+    }
+    return null;
   }
 }
