@@ -24,7 +24,7 @@ import java.util.UUID;
  * @description Another day of Insanity
  */
 public class Profile {
-  public static final String API_URL = "https://en.pronouns.page/api/";
+  public static final String API_URL = "https://pronouns.page/api/";
   public static long PROFILE_EXPIRY = 5 * 60 * 1000L;
   public static long PRONOUN_EXPIRY = 5 * 60 * 1000L;
 
