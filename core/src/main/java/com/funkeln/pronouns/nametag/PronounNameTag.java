@@ -10,7 +10,7 @@ import net.labymod.api.client.render.RenderPipeline;
 import net.labymod.api.client.render.draw.RectangleRenderer;
 import net.labymod.api.client.render.font.RenderableComponent;
 import net.labymod.api.client.render.matrix.Stack;
-import com.funkeln.pronouns.utils.Profile;
+import com.funkeln.pronouns.profile.Profile;
 import org.jetbrains.annotations.Nullable;
 
 /**

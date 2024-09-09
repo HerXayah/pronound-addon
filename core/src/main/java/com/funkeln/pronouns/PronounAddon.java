@@ -1,7 +1,10 @@
 package com.funkeln.pronouns;
 
+import com.funkeln.pronouns.event.BroadcastEventListener;
+import com.funkeln.pronouns.event.ServerJoinListener;
 import com.funkeln.pronouns.nametag.FlagNameTag;
-import com.funkeln.pronouns.utils.Pridetags;
+import com.funkeln.pronouns.profile.ProfileRepository;
+import com.google.gson.JsonObject;
 import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.component.Component;
@@ -10,9 +13,6 @@ import net.labymod.api.models.addon.annotation.AddonMain;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.funkeln.pronouns.nametag.PronounNameTag;
-import com.funkeln.pronouns.utils.Profile;
-import com.funkeln.pronouns.utils.PronounsAPI;
-import com.funkeln.pronouns.utils.PronounsAPI.ProfileFetchListener;
 
 @AddonMain
 public class PronounAddon extends LabyAddon<PronounConfiguration> {
@@ -38,34 +38,17 @@ public class PronounAddon extends LabyAddon<PronounConfiguration> {
     INSTANCE = this;
     this.registerSettingCategory();
     if(this.configuration().enabled().get()) {
-      if(configuration().name().get().isEmpty()) {
-        displayMessage("Please set the name in the config");
-      } else {
-        meow = configuration().name().get().trim();
-      }
-      PronounsAPI.addProfileFetchListener(meow, new ProfileFetchListener() {
-        @Override
-        public void onProfileFetched(Profile profile) {
-          log.info("Fetched profile for " + meow);
-          pronoun = profile.getPronoun().trim();
-        }
-
-        @Override
-        public void onProfileFetchFailed(String username, Exception e) {
-          log.error("Failed to fetch profile for " + username, e);
-          e.printStackTrace();
-        }
-      });
-
-      // Request the profile
-      PronounsAPI.getProfile(meow);
-
-      // Wait to ensure the async task completes (for demonstration purposes)
-      try {
-        Thread.sleep(2000);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
+      labyAPI().eventBus().registerListener(new BroadcastEventListener());
+      labyAPI().taskExecutor().getScheduledPool().scheduleAtFixedRate(
+          () -> {
+            publishNameUpdate();
+            ProfileRepository.updateProfiles(false);
+          },
+          30000,
+          30000,
+          java.util.concurrent.TimeUnit.MILLISECONDS
+      );
+      labyAPI().eventBus().registerListener(new ServerJoinListener(this));
     }
     this.logger().info("Enabled the Addon");
     this.labyAPI().tagRegistry().register(

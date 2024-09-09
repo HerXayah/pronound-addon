@@ -36,12 +36,12 @@ public class FlagNameTag extends NameTag {
 
   @Override
   protected @Nullable RenderableComponent getRenderableComponent() {
-    if (!(this.entity instanceof Player) || this.entity.isCrouching() || !Laby.labyAPI().minecraft().getClientPlayer().getName().equals(((Player) this.entity).getName())) {
+    if (!(this.entity instanceof Player) || this.entity.isCrouching()) {
       return null;
     }
-      HorizontalAlignment alignment;
-      alignment = HorizontalAlignment.CENTER;
 
+    if (ProfileRepository.find(this.entity.getUniqueId()).isPresent()) {
+      HorizontalAlignment alignment = HorizontalAlignment.CENTER;
       PronounAddon addon = PronounAddon.getInstance();
 
       if (!addon.configuration().enabled().get()) {
@@ -58,7 +58,10 @@ public class FlagNameTag extends NameTag {
       }
 
       return RenderableComponent.of(component, alignment);
+    } else {
+      return null;
     }
+  }
 
   @Override
   protected void renderText(
@@ -80,6 +83,7 @@ public class FlagNameTag extends NameTag {
       for (Icon flag : flags) {
 
         // Render flag at the updated x position
+        flagcount++;
         flag.render(stack, x, +1, 15, height - 1);
 
         // Move the x position to the right for the next flag
