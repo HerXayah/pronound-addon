@@ -45,6 +45,12 @@ public class PronounConfiguration extends AddonConfig {
     OperatingSystem.getPlatform().openUri(String.format("https://pronouns.page"));
   }
 
+  @MethodOrder(after = "button")
+  @ButtonSetting
+  public void button2(Setting setting) {
+    OperatingSystem.getPlatform().openUri(String.format("https://github.com/HerXayah/pronound-addon/blob/master/README.md"));
+  }
+
 
   public ConfigProperty<String> name() {
     return this.name;

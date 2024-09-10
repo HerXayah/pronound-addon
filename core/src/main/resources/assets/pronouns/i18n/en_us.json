@@ -20,7 +20,13 @@
         "name": "pronouns.page Website",
         "description": "The button to open the pronouns.page website",
         "type": "text",
-        "text": "Open Profile"
+        "text": "Open Website"
+      },
+      "button2": {
+        "name": "How to set up this addon?",
+        "description": "The button to open the tutorial",
+        "type": "text",
+        "text": "Open Tutorial"
       },
       "renderFlags": {
         "name": "Render Flags",
