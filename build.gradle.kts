@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "de.funkeln.pronouns"
-version = System.getenv().getOrDefault("VERSION", "1.0.0")  
+version = System.getenv().getOrDefault("VERSION", "1.0.5")
 
 labyMod {
     defaultPackageName = "de.funkeln.pronouns" //change this to your main package name (used by all modules)
