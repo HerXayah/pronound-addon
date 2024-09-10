@@ -1,11 +1,15 @@
 package com.funkeln.pronouns;
 
 import net.labymod.api.addon.AddonConfig;
+import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget.ButtonSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.TextFieldWidget.TextFieldSetting;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.annotation.SpriteSlot;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
+import net.labymod.api.configuration.settings.Setting;
+import net.labymod.api.models.OperatingSystem;
+import net.labymod.api.util.MethodOrder;
 
 @ConfigName("settings")
 public class PronounConfiguration extends AddonConfig {
@@ -34,6 +38,13 @@ public class PronounConfiguration extends AddonConfig {
 
   @TextFieldSetting
   private final ConfigProperty<String> name = new ConfigProperty<>("");
+
+  @MethodOrder(after = "name")
+  @ButtonSetting
+  public void button(Setting setting) {
+    OperatingSystem.getPlatform().openUri(String.format("https://pronouns.page"));
+  }
+
 
   public ConfigProperty<String> name() {
     return this.name;

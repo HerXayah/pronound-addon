@@ -1,5 +1,10 @@
 {
   "pronouns": {
+    "bulletPoint": {
+      "open": {
+        "name": "Open Pronoun Page of User"
+      }
+    },
     "settings": {
       "enabled": {
         "name": "Addon enabled?"
@@ -10,6 +15,12 @@
         "type": "text",
         "value": "player",
         "default": ""
+      },
+      "button": {
+        "name": "pronouns.page Website",
+        "description": "The button to open the pronouns.page website",
+        "type": "text",
+        "text": "Open Profile"
       },
       "renderFlags": {
         "name": "Render Flags",
