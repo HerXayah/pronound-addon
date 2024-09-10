@@ -14,7 +14,7 @@ labyMod {
         displayName = "PronounsDisplay"
         author = "funkeln"
         description = "Display your Pronouns from pronouns.page ingame"
-        minecraftVersion = "*"
+        minecraftVersion = "1.20.1<*"
         version = getVersion().toString()
     }
 
