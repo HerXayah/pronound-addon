@@ -61,7 +61,9 @@ public class Profile {
         URL url = new URI(API_URL + "profile/get/" + websiteName + "?version=2").toURL();
         JsonObject profile = null;
         try (InputStream stream = url.openStream()) {
-          JsonElement element = JsonParser.parseReader(new InputStreamReader(stream));
+          // Deprecated API usage is required as static methods do not exist in gson 2.2.4
+          // noinspection deprecation
+          JsonElement element = new JsonParser().parse(new InputStreamReader(stream));
           profile = element.getAsJsonObject();
         }
         updatePronouns(pronounFromJson(profile));
@@ -83,7 +85,9 @@ public class Profile {
 
   public static String pronounFromJson(JsonObject profile) {
     JsonArray pronounsArray = profile.getAsJsonObject("profiles").getAsJsonObject("en").getAsJsonArray("pronouns");
-    if (pronounsArray == null || pronounsArray.isEmpty()) return null;
+    // JsonArray#isEmpty() doesn't exist in 2.2.4
+    //noinspection SizeReplaceableByIsEmpty
+    if (pronounsArray == null || pronounsArray.size() == 0) return null;
     List<String> outputPronounList = new ArrayList<>();
     for(JsonElement pronoun : pronounsArray) {
       outputPronounList.add(pronoun.getAsJsonObject().get("value").getAsString());
@@ -104,7 +108,9 @@ public class Profile {
       return null;
     }
     JsonArray flagsArray = enProfile.getAsJsonArray("flags");
-    if (flagsArray == null || flagsArray.isEmpty()) {
+    // JsonArray#isEmpty() doesn't exist in 2.2.4
+    //noinspection SizeReplaceableByIsEmpty
+    if (flagsArray == null || flagsArray.size() == 0) {
       return null;
     }
     List<String> flagNamesList = new ArrayList<>();

@@ -73,10 +73,9 @@ public class PronounAddon extends LabyAddon<PronounConfiguration> {
 
   public void publishNameUpdate() {
     String newName = configuration().name().get();
-    logger().info("Publishing name change to " + newName);
+    logger().info("Publishing pronoun name change to " + newName);
     JsonObject data = new JsonObject();
-    data.addProperty("name", newName
-    );
+    data.addProperty("name", newName);
     labyAPI().labyConnect().getSession().sendBroadcastPayload("pronouns", data);
     ProfileRepository.clearExpired();
   }

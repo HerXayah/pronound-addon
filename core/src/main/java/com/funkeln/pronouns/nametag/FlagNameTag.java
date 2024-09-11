@@ -58,6 +58,11 @@ public class FlagNameTag extends NameTag {
         return null;
       }
 
+      Icon[] flags = myFlags();
+      if (flags == null || flags.length == 0) {
+        return null;
+      }
+
       return RenderableComponent.of(component, alignment);
     } else {
       return null;

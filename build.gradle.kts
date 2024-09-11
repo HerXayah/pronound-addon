@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "de.funkeln.pronouns"
-version = System.getenv().getOrDefault("VERSION", "1.0.5")
+version = System.getenv().getOrDefault("VERSION", "1.0.6")
 
 labyMod {
     defaultPackageName = "de.funkeln.pronouns" //change this to your main package name (used by all modules)
@@ -14,7 +14,7 @@ labyMod {
         displayName = "PronounsDisplay"
         author = "funkeln"
         description = "Display your Pronouns from pronouns.page ingame"
-        minecraftVersion = "1.20.1<*"
+        minecraftVersion = "*"
         version = getVersion().toString()
     }
 
