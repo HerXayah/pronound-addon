@@ -4,7 +4,7 @@ plugins {
     id("net.labymod.gradle.addon")
 }
 
-group = "de.funkeln.pronouns"
+group = "com.funkeln.pronouns"
 version = System.getenv().getOrDefault("VERSION", "1.0.5")
 
 labyMod {
@@ -14,26 +14,26 @@ labyMod {
         displayName = "PronounsDisplay"
         author = "funkeln"
         description = "Display your Pronouns from pronouns.page ingame"
-        minecraftVersion = "1.20.1<*"
+        minecraftVersion = "*"
         version = getVersion().toString()
     }
 
     minecraft {
         registerVersions(
-                "1.8.9",
-                "1.12.2",
-                "1.16.5",
-                "1.17.1",
-                "1.18.2",
-                "1.19.2",
-                "1.19.3",
-                "1.19.4",
-                "1.20.1",
-                "1.20.2",
-                "1.20.4",
-                "1.20.5",
-                "1.20.6",
-                "1.21"
+            "1.8.9",
+            "1.12.2",
+            "1.16.5",
+            "1.17.1",
+            "1.18.2",
+            "1.19.2",
+            "1.19.3",
+            "1.19.4",
+            "1.20.1",
+            "1.20.2",
+            "1.20.4",
+            "1.20.5",
+            "1.20.6",
+            "1.21"
         ) { version, provider ->
             configureRun(provider, version)
         }

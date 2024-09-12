@@ -1,88 +1,69 @@
 package com.funkeln.pronouns;
 
-import com.funkeln.pronouns.event.BroadcastEventListener;
-import com.funkeln.pronouns.event.ServerJoinListener;
-import com.funkeln.pronouns.interaction.UserInteraction;
-import com.funkeln.pronouns.nametag.FlagNameTag;
+import com.funkeln.pronouns.nametag.NameTagFlag;
+import com.funkeln.pronouns.nametag.NameTagPronoun;
 import com.funkeln.pronouns.profile.ProfileRepository;
 import com.google.gson.JsonObject;
-import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
-import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.tag.PositionType;
 import net.labymod.api.models.addon.annotation.AddonMain;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import com.funkeln.pronouns.nametag.PronounNameTag;
 
+import java.util.Optional;
+
+/**
+ * @author <a href="https://github.com/PrincessAkira">PrincessAkira ~ Sarah</a>
+ * @version 1.0.0
+ * @apiNote another day of insanity
+ * @since 9/9/2024 @10:21 PM
+ */
 @AddonMain
 public class PronounAddon extends LabyAddon<PronounConfiguration> {
-  private static final Log log = LogFactory.getLog(PronounAddon.class);
-  public static PronounAddon INSTANCE;
-  public String pronoun;
-  public volatile Component component;
-  public String meow;
+	private static final PronounAddon INSTANCE = new PronounAddon();
 
-  public PronounAddon() {
-    INSTANCE = this;
-  }
+	public static PronounAddon getInstance() {
+		return INSTANCE;
+	}
 
-  public static PronounAddon getInstance() {
-    return INSTANCE;
-  }
+	@Override
+	@SuppressWarnings("unstable")
+	protected void enable() {
+		this.registerSettingCategory();
+		this.configuration().name().addChangeListener(this::publishNameUpdate);
 
-  @Override
-  protected void enable() {
-    INSTANCE = this;
-    this.registerSettingCategory();
-    if(this.configuration().enabled().get()) {
-      labyAPI().eventBus().registerListener(new BroadcastEventListener());
-      labyAPI().taskExecutor().getScheduledPool().scheduleAtFixedRate(
-          () -> {
-            publishNameUpdate();
-            ProfileRepository.updateProfiles(false);
-          },
-          30000,
-          30000,
-          java.util.concurrent.TimeUnit.MILLISECONDS
-      );
-      labyAPI().eventBus().registerListener(new ServerJoinListener(this));
-    }
-    this.logger().info("Enabled the Addon");
-    this.labyAPI().interactionMenuRegistry().register(new UserInteraction(
-        this
-    ));
-    this.labyAPI().tagRegistry().register(
-      "pronouns",
-      PositionType.BELOW_NAME,
-      new PronounNameTag(
-        Laby.references().renderPipeline(),
-        Laby.references().renderPipeline().rectangleRenderer()
-      )
-    );
-    this.labyAPI().tagRegistry().register(
-      "pronouns_flags",
-      PositionType.ABOVE_NAME,
-      new FlagNameTag(
-        Laby.references().renderPipeline(),
-        Laby.references().renderPipeline().rectangleRenderer()
-      )
-    );
-    this.configuration().name().addChangeListener(this::publishNameUpdate);
-  }
+		this.labyAPI().eventBus().registerListener(new PronounEvents());
+		this.labyAPI().interactionMenuRegistry().register(new PronounInteraction());
+		this.labyAPI().tagRegistry().registerBefore(
+			 "pronouns",
+			 "pronouns_flags",
+			 PositionType.BELOW_NAME,
+			 new NameTagPronoun()
+		);
+		this.labyAPI().tagRegistry().registerAfter(
+			 "pronouns_flags",
+			 "pronouns",
+			 PositionType.ABOVE_NAME,
+			 new NameTagFlag()
+		);
 
-  public void publishNameUpdate() {
-    String newName = configuration().name().get();
-    logger().info("Publishing name change to " + newName);
-    JsonObject data = new JsonObject();
-    data.addProperty("name", newName
-    );
-    labyAPI().labyConnect().getSession().sendBroadcastPayload("pronouns", data);
-    ProfileRepository.clearExpired();
-  }
+		this.publishNameUpdate();
+		ProfileRepository.updateProfiles();
 
-  @Override
-  protected Class<PronounConfiguration> configurationClass() {
-    return PronounConfiguration.class;
-  }
+		this.logger().info("pronouns-addon says hellow. :D");
+		this.logger().info("made by funkeln with \u2661");
+	}
+
+	public void publishNameUpdate() {
+		String newName = configuration().name().get();
+		logger().debug("publishing name change to %s".formatted(newName));
+		JsonObject data = new JsonObject();
+		data.addProperty("name", newName);
+		Optional.ofNullable(labyAPI().labyConnect().getSession()).ifPresent(
+			 session -> session.sendBroadcastPayload("pronouns", data)
+		);
+	}
+
+	@Override
+	protected Class<PronounConfiguration> configurationClass() {
+		return PronounConfiguration.class;
+	}
 }

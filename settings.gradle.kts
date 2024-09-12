@@ -1,4 +1,4 @@
-rootProject.name = "labymod4-addon-template"
+rootProject.name = "pronound-addon"
 
 pluginManagement {
     val labyGradlePluginVersion = "0.4.6"
@@ -19,7 +19,9 @@ pluginManagement {
     }
 }
 
-plugins.apply("net.labymod.gradle")
+include(
+    ":api",
+    ":core",
+)
 
-include(":api")
-include(":core")
+plugins.apply("net.labymod.gradle")
