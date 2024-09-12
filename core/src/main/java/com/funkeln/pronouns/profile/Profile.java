@@ -6,12 +6,12 @@ import com.funkeln.pronouns.util.json.JsonArray;
 import com.funkeln.pronouns.util.json.JsonObject;
 import com.funkeln.pronouns.util.json.JsonParser;
 import com.funkeln.pronouns.util.json.JsonValue;
-import net.labymod.api.Laby;
 import net.labymod.api.client.gui.icon.Icon;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Version;
 import java.net.http.HttpRequest;
@@ -65,7 +65,7 @@ public class Profile {
 			 flagsArray.asList(ArrayList::new)
 			           .stream()
 			           .map(JsonValue::asString)
-			           .limit(3)
+			           // .limit(3) TODO: ... | why? ;w; ~luzey
 			           .toArray(String[]::new)
 		);
 	}
@@ -80,8 +80,9 @@ public class Profile {
 				  .build()
 		) {
 			return new JsonParser(client.send(
-				 HttpRequest.newBuilder().uri(URI.create(API_URL.formatted(username))).build(),
-				 HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8)
+				 HttpRequest.newBuilder().uri(URI.create(API_URL.formatted(
+					  URLEncoder.encode(username, StandardCharsets.UTF_8)
+				 ))).build(), HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8)
 			).body()).parse().asObject();
 		} catch (IOException | InterruptedException e) {
 			throw new RuntimeException(e);
@@ -96,14 +97,12 @@ public class Profile {
 	}
 
 	public void update() {
-		Laby.labyAPI().taskExecutor().getPool().execute(() -> {
-			JsonObject object = getProfile(username);
-			this.pronoun = pronounFromJson(object);
-			FlagResolver.iconsFromName(
-				 this::updateFlags,
-				 flagNamesFromJson(object)
-			);
-		});
+		JsonObject object = getProfile(username);
+		this.pronoun = pronounFromJson(object);
+		FlagResolver.iconsFromName(
+			 this::updateFlags,
+			 flagNamesFromJson(object)
+		);
 	}
 
 	public boolean pronounsAvailable() {

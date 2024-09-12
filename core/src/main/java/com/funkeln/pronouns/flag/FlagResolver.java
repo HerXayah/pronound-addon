@@ -1,9 +1,9 @@
 package com.funkeln.pronouns.flag;
 
-import net.labymod.api.Laby;
 import net.labymod.api.client.gui.icon.Icon;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
@@ -28,7 +28,7 @@ public final class FlagResolver {
 			return;
 		if (CACHE.containsKey(name))
 			lazyReturn.accept(CACHE.get(name));
-		Laby.labyAPI().taskExecutor().getPool().execute(() -> lazyReturn.accept(CACHE.put(
+		CompletableFuture.runAsync(() -> lazyReturn.accept(CACHE.put(
 			 name, Icon.url("%s%s.png".formatted(FLAGS_URL, name.replaceAll(" +", "%20")))
 		)));
 	}

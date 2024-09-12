@@ -18,7 +18,10 @@ public class ProfileRepository {
 	ProfileRepository() {}
 
 	public static void enterName(UUID id, String name) {
-		profiles.computeIfAbsent(id, uuid -> new Profile()).updateName(name);
+		profiles.remove(id);
+		Profile profile = new Profile();
+		profile.updateName(name);
+		profiles.put(id, profile);
 	}
 
 	public static Optional<@Nullable Profile> find(UUID id) {

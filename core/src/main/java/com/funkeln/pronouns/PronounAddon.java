@@ -2,13 +2,14 @@ package com.funkeln.pronouns;
 
 import com.funkeln.pronouns.nametag.NameTagFlag;
 import com.funkeln.pronouns.nametag.NameTagPronoun;
-import com.funkeln.pronouns.profile.ProfileRepository;
 import com.google.gson.JsonObject;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.entity.player.tag.PositionType;
 import net.labymod.api.models.addon.annotation.AddonMain;
 
 import java.util.Optional;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author <a href="https://github.com/PrincessAkira">PrincessAkira ~ Sarah</a>
@@ -18,17 +19,20 @@ import java.util.Optional;
  */
 @AddonMain
 public class PronounAddon extends LabyAddon<PronounConfiguration> {
-	private static final PronounAddon INSTANCE = new PronounAddon();
+	private static PronounAddon instance;
+
+	public PronounAddon() {
+		instance = this;
+	}
 
 	public static PronounAddon getInstance() {
-		return INSTANCE;
+		return instance;
 	}
 
 	@Override
 	@SuppressWarnings("unstable")
 	protected void enable() {
-		this.registerSettingCategory();
-		this.configuration().name().addChangeListener(this::publishNameUpdate);
+		instance = this;
 
 		this.labyAPI().eventBus().registerListener(new PronounEvents());
 		this.labyAPI().interactionMenuRegistry().register(new PronounInteraction());
@@ -45,8 +49,11 @@ public class PronounAddon extends LabyAddon<PronounConfiguration> {
 			 new NameTagFlag()
 		);
 
-		this.publishNameUpdate();
-		ProfileRepository.updateProfiles();
+		Executors.newSingleThreadScheduledExecutor()
+		         .scheduleAtFixedRate(this::publishNameUpdate, 0L, 10L, TimeUnit.SECONDS);
+
+		this.registerSettingCategory();
+		this.configuration().name().addChangeListener(this::publishNameUpdate);
 
 		this.logger().info("pronouns-addon says hellow. :D");
 		this.logger().info("made by funkeln with \u2661");
