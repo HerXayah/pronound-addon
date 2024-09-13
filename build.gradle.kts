@@ -6,11 +6,11 @@ plugins {
 
 val versions = providers.gradleProperty("net.labymod.minecraft-versions").get().split(";")
 
-group = "de.funkeln.pronouns"
+group = "com.funkeln.pronouns"
 version = providers.environmentVariable("VERSION").getOrElse("1.0.7")
 
 labyMod {
-    defaultPackageName = "de.funkeln.pronouns" //change this to your main package name (used by all modules)
+    defaultPackageName = "com.funkeln.pronouns" //change this to your main package name (used by all modules)
     addonInfo {
         namespace = "pronouns"
         displayName = "PronounsDisplay"

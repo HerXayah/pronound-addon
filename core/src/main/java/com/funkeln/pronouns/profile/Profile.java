@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -152,6 +153,17 @@ public class Profile {
 
   public String username() {
     return websiteName;
+  }
+
+  public String flagNames() {
+    if (flags == null) {
+      return null;
+    }
+    StringBuilder sb = new StringBuilder();
+    for (Icon icon : flags) {
+      sb.append(icon.getUrl(), Objects.requireNonNull(icon.getUrl()).lastIndexOf("/") + 1, icon.getUrl().lastIndexOf(".")).append(" ");
+    }
+    return sb.toString();
   }
 
   public String pronoun() {

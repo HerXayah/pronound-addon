@@ -2,6 +2,7 @@ package com.funkeln.pronouns;
 
 import com.funkeln.pronouns.event.BroadcastEventListener;
 import com.funkeln.pronouns.event.ServerJoinListener;
+import com.funkeln.pronouns.interaction.FlagOutput;
 import com.funkeln.pronouns.interaction.UserInteraction;
 import com.funkeln.pronouns.nametag.FlagNameTag;
 import com.funkeln.pronouns.profile.ProfileRepository;
@@ -50,6 +51,9 @@ public class PronounAddon extends LabyAddon<PronounConfiguration> {
     }
     this.logger().info("Enabled the Addon");
     this.labyAPI().interactionMenuRegistry().register(new UserInteraction(
+        this
+    ));
+    this.labyAPI().interactionMenuRegistry().register(new FlagOutput(
         this
     ));
     this.labyAPI().tagRegistry().register(
