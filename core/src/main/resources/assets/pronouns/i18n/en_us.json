@@ -2,7 +2,8 @@
   "pronouns": {
     "bulletPoint": {
       "open": {
-        "name": "Open Pronoun Page of User"
+        "name": "Open Pronoun Page of User",
+        "getFlags": "Display Flags of User in Chat"
       }
     },
     "settings": {
