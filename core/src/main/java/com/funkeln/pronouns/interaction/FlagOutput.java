@@ -42,10 +42,6 @@ public class FlagOutput extends AbstractBulletPoint {
       return false;
     }
 
-    if (player.getUniqueId().equals(this)) {
-      return true;
-    }
-
     //return this.broadcastController.get(player.getUniqueId()) != null;
     return ProfileRepository.find(player.getUniqueId()).isPresent();
   }

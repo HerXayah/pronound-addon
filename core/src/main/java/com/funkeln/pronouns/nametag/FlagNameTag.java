@@ -41,17 +41,18 @@ public class FlagNameTag extends NameTag {
       return null;
     }
 
+    PronounAddon addon = PronounAddon.getInstance();
+
+    if (!addon.configuration().enabled().get()) {
+      return null;
+    }
+
+    if (!addon.configuration().renderFlags().get()) {
+      return null;
+    }
+
     if (ProfileRepository.find(this.entity.getUniqueId()).isPresent()) {
       HorizontalAlignment alignment = HorizontalAlignment.CENTER;
-      PronounAddon addon = PronounAddon.getInstance();
-
-      if (!addon.configuration().enabled().get()) {
-        return null;
-      }
-
-      if (!addon.configuration().renderFlags().get()) {
-        return null;
-      }
 
       Component component = Component.empty();
       if (component == null) {

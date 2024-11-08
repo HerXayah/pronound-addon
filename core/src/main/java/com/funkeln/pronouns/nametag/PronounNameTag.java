@@ -34,17 +34,18 @@ public class PronounNameTag extends NameTag {
       return null;
     }
 
+    PronounAddon addon = PronounAddon.getInstance();
+    if (!addon.configuration().enabled().get()) {
+      return null;
+    }
+
+    if (!addon.configuration().renderTag().get()) {
+      return null;
+    }
+
     String pronoun = myPronoun();
     if (pronoun != null) {
       HorizontalAlignment alignment = HorizontalAlignment.CENTER;
-      PronounAddon addon = PronounAddon.getInstance();
-      if (!addon.configuration().enabled().get()) {
-        return null;
-      }
-
-      if (!addon.configuration().renderTag().get()) {
-        return null;
-      }
 
       Component component = Component.text(pronoun);
       if (component == null) {
@@ -67,13 +68,12 @@ public class PronounNameTag extends NameTag {
       float x,
       float y
   ) {
-    float width = this.getWidth();
     float height = this.getHeight();
     this.rectangleRenderer.renderRectangle(
         stack,
         x,
         y,
-        width,
+        0,
         height,
         backgroundColor
     );
@@ -84,14 +84,6 @@ public class PronounNameTag extends NameTag {
   @Override
   public float getScale() {
     return 0.65F;
-  }
-
-  @Override
-  public float getWidth() {
-    if (myPronoun() == null) {
-      return super.getWidth();
-    }
-    return super.getWidth();
   }
 
   @Override
