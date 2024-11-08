@@ -68,12 +68,13 @@ public class PronounNameTag extends NameTag {
       float x,
       float y
   ) {
+    float width = this.getWidth();
     float height = this.getHeight();
     this.rectangleRenderer.renderRectangle(
         stack,
         x,
         y,
-        0,
+        width,
         height,
         backgroundColor
     );
@@ -91,6 +92,13 @@ public class PronounNameTag extends NameTag {
     return super.getHeight() + 1;
   }
 
+  @Override
+  public float getWidth() {
+    if (myPronoun() == null) {
+      return super.getWidth();
+    }
+    return super.getWidth();
+  }
 
   private String myPronoun() {
     Optional<Profile> profileFetch = ProfileRepository.find(this.entity.getUniqueId());
