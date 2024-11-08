@@ -95,7 +95,7 @@ public class PronounNameTag extends NameTag {
   @Override
   public float getWidth() {
     if (myPronoun() == null) {
-      return super.getWidth();
+      return 0;
     }
     return super.getWidth();
   }
