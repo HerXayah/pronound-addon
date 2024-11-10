@@ -7,14 +7,14 @@ plugins {
 val versions = providers.gradleProperty("net.labymod.minecraft-versions").get().split(";")
 
 group = "com.funkeln.pronouns"
-version = providers.environmentVariable("VERSION").getOrElse("1.0.7")
+version = providers.environmentVariable("VERSION").getOrElse("1.0.10")
 
 labyMod {
     defaultPackageName = "com.funkeln.pronouns" //change this to your main package name (used by all modules)
     addonInfo {
         namespace = "pronouns"
         displayName = "PronounsDisplay"
-        author = "funkeln"
+        author = "starwakes"
         description = "Display your Pronouns from pronouns.page ingame"
         minecraftVersion = "*"
         version = getVersion().toString()
