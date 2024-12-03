@@ -27,6 +27,7 @@ public class FlagResolver {
     }
     if (cache.containsKey(name)) {
       lazyReturn.accept(cache.get(name));
+      return;
     }
     Laby.labyAPI().taskExecutor().getPool().submit(() -> {
       Icon icon = Icon.url(FLAGS_URL + name + ".png");
