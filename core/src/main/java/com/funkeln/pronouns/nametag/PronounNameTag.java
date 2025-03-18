@@ -35,11 +35,7 @@ public class PronounNameTag extends NameTag {
     }
 
     PronounAddon addon = PronounAddon.getInstance();
-    if (!addon.configuration().enabled().get()) {
-      return null;
-    }
-
-    if (!addon.configuration().renderTag().get()) {
+    if (!addon.configuration().enabled().get() || !addon.configuration().renderFlags().get()) {
       return null;
     }
 

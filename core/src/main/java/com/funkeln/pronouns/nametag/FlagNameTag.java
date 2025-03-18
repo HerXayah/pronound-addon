@@ -43,11 +43,7 @@ public class FlagNameTag extends NameTag {
 
     PronounAddon addon = PronounAddon.getInstance();
 
-    if (!addon.configuration().enabled().get()) {
-      return null;
-    }
-
-    if (!addon.configuration().renderFlags().get()) {
+    if (!addon.configuration().enabled().get() || !addon.configuration().renderFlags().get()) {
       return null;
     }
 
@@ -88,13 +84,13 @@ public class FlagNameTag extends NameTag {
     if (flags != null) {
       int flagcount = 0;
       float padding = 0.5f; // Space between myFlags
-      int widtz = 15; // Define the width for each flag
+      int flagboxwidth = 15; // Define the width for each flag
       for (Icon flag : flags) {
         // Render flag at the updated x position
         flagcount++;
         flag.render(stack, x, +1, 15, height - 1);
         // Move the x position to the right for the next flag
-        x += widtz + padding; // Increment x by the width of the flag and padding
+        x += flagboxwidth + padding; // Increment x by the width of the flag and padding
       }
     }
     super.renderText(stack, component, discrete, textColor, 0, width, y + 1);

@@ -21,19 +21,15 @@ public class FlagOutput extends AbstractBulletPoint {
 
   private final PronounAddon pronounAddon;
 
-  private Profile otherPlayer;
-
   public FlagOutput(
     PronounAddon pronounAddon
   ) {
     super(Component.translatable("pronouns.bulletPoint.open.getFlags"));
-
     this.pronounAddon = pronounAddon;
   }
 
   public void execute(Player player) {
-    this.otherPlayer = ProfileRepository.find(player.getUniqueId()).orElse(null);
-    // display flags
+    Profile otherPlayer = ProfileRepository.find(player.getUniqueId()).orElse(null);
     Laby.labyAPI().minecraft().chatExecutor().displayClientMessage("Flag(s) of " + player.getName() + " (" + otherPlayer.username() + ")" + " : " + otherPlayer.flagNames());
   }
 
@@ -41,8 +37,6 @@ public class FlagOutput extends AbstractBulletPoint {
     if (!pronounAddon.configuration().enabled().get()) {
       return false;
     }
-
-    //return this.broadcastController.get(player.getUniqueId()) != null;
     return ProfileRepository.find(player.getUniqueId()).isPresent();
   }
 

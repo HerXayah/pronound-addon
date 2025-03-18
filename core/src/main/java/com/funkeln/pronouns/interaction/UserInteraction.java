@@ -18,23 +18,17 @@ import java.util.UUID;
 public class UserInteraction extends AbstractBulletPoint {
 
   private static final String URL = "https://en.pronouns.page/@%s";
-
   private final PronounAddon pronounAddon;
-
-  private Profile otherPlayer;
 
   public UserInteraction(
     PronounAddon pronounAddon
   ) {
     super(Component.translatable("pronouns.bulletPoint.open.name"));
-
     this.pronounAddon = pronounAddon;
   }
 
   public void execute(Player player) {
-    this.otherPlayer = ProfileRepository.find(player.getUniqueId()).orElse(null);
-    //Debug reasons
-    //ProfileRepository.enterName(player.getUniqueId(), "funkeln");
+    Profile otherPlayer = ProfileRepository.find(player.getUniqueId()).orElse(null);
     OperatingSystem.getPlatform().openUri(String.format(URL, otherPlayer.username()));
   }
 
@@ -42,8 +36,6 @@ public class UserInteraction extends AbstractBulletPoint {
     if (!pronounAddon.configuration().enabled().get()) {
       return false;
     }
-
-    //return this.broadcastController.get(player.getUniqueId()) != null;
     return ProfileRepository.find(player.getUniqueId()).isPresent();
   }
 
