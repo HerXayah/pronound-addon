@@ -9,7 +9,6 @@ import com.funkeln.pronouns.profile.ProfileRepository;
 import com.google.gson.JsonObject;
 import net.labymod.api.Laby;
 import net.labymod.api.addon.LabyAddon;
-import net.labymod.api.client.component.Component;
 import net.labymod.api.client.entity.player.tag.PositionType;
 import net.labymod.api.models.addon.annotation.AddonMain;
 import org.apache.commons.logging.Log;
@@ -18,11 +17,8 @@ import com.funkeln.pronouns.nametag.PronounNameTag;
 
 @AddonMain
 public class PronounAddon extends LabyAddon<PronounConfiguration> {
-  private static final Log log = LogFactory.getLog(PronounAddon.class);
+
   public static PronounAddon INSTANCE;
-  public String pronoun;
-  public volatile Component component;
-  public String meow;
 
   public PronounAddon() {
     INSTANCE = this;
