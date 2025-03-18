@@ -73,11 +73,18 @@ public class PronounAddon extends LabyAddon<PronounConfiguration> {
 
   public void publishNameUpdate() {
     String newName = configuration().name().get();
-    logger().info("Publishing pronoun name change to " + newName);
-    JsonObject data = new JsonObject();
-    data.addProperty("name", newName);
-    labyAPI().labyConnect().getSession().sendBroadcastPayload("pronouns", data);
-    ProfileRepository.clearExpired();
+    // fix the usage of invalid usernames
+    // Username must be between 4 and 16 characters long and can only contain numbers, letters, dots, hyphens and underscores.
+    if (newName.length() < 4 || newName.length() > 16 || !newName.matches("^[a-zA-Z0-9._-]+$")) {
+      // set name in config to Invalid
+      configuration().name().set("Invalid");
+    } else {
+      logger().info("Publishing pronoun name change to " + newName);
+      JsonObject data = new JsonObject();
+      data.addProperty("name", newName);
+      labyAPI().labyConnect().getSession().sendBroadcastPayload("pronouns", data);
+    }
+      ProfileRepository.clearExpired();
   }
 
   @Override
