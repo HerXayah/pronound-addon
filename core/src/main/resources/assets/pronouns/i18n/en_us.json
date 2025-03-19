@@ -22,7 +22,7 @@
         "description": "Username must be between 4 and 16 characters long and can only contain numbers, letters, dots, hyphens and underscores.",
         "type": "text",
         "value": "None",
-        "default": ""
+        "default": "No Username Set"
       },
       "button": {
         "name": "pronouns.page Website",

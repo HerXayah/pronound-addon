@@ -29,6 +29,8 @@ public class PronounAddon extends LabyAddon<PronounConfiguration> {
     return INSTANCE;
   }
 
+  private static final Pattern validUsernamePattern = Pattern.compile("^[a-zA-Z0-9._-]{4,16}$");
+
   @Override
   protected void enable() {
     INSTANCE = this;
@@ -74,11 +76,11 @@ public class PronounAddon extends LabyAddon<PronounConfiguration> {
 
   public void publishNameUpdate() {
     String newName = configuration().name().get();
-    if (newName == null) {
+    // check if name is just spaces
+    if (newName == null || newName.trim().isEmpty()) {
       configuration().information().set("No Username set!");
       return;
     }
-    Pattern validUsernamePattern = Pattern.compile("^[a-zA-Z0-9._-]{4,16}$");
     if (!validUsernamePattern.matcher(newName).matches()) {
       configuration().information().set("Invalid Username");
       return;
