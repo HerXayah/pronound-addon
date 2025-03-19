@@ -8,6 +8,7 @@ import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.annotation.SpriteSlot;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.Setting;
+import net.labymod.api.configuration.settings.annotation.SettingSection;
 import net.labymod.api.models.OperatingSystem;
 import net.labymod.api.util.MethodOrder;
 
@@ -40,6 +41,10 @@ public class PronounConfiguration extends AddonConfig {
   private final ConfigProperty<String> name = new ConfigProperty<>("");
 
   @MethodOrder(after = "name")
+  @TextFieldSetting
+  private final ConfigProperty<String> information = new ConfigProperty<>("");
+
+  @MethodOrder(after = "information")
   @ButtonSetting
   public void button(Setting setting) {
     OperatingSystem.getPlatform().openUri(String.format("https://pronouns.page"));
@@ -51,6 +56,9 @@ public class PronounConfiguration extends AddonConfig {
     OperatingSystem.getPlatform().openUri(String.format("https://github.com/HerXayah/pronound-addon/blob/master/README.md"));
   }
 
+  public ConfigProperty<String> information() {
+    return this.information;
+  }
 
   public ConfigProperty<String> name() {
     return this.name;

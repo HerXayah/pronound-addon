@@ -17,6 +17,13 @@
         "value": "player",
         "default": ""
       },
+      "information": {
+        "name": "Username above must be between 4 and 16 characters long and can only contain numbers, letters, dots, hyphens and underscores.",
+        "description": "Username must be between 4 and 16 characters long and can only contain numbers, letters, dots, hyphens and underscores.",
+        "type": "text",
+        "value": "None",
+        "default": ""
+      },
       "button": {
         "name": "pronouns.page Website",
         "description": "The button to open the pronouns.page website",
